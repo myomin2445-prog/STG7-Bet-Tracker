@@ -1,129 +1,91 @@
+
 <!DOCTYPE html>
 <html lang="my">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STG7 Match Board</title>
-
 <style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-}
-
-.header{
-    background:#0d5bd7;
-    color:white;
-    text-align:center;
-    padding:15px;
-    font-size:30px;
-    font-weight:bold;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-}
-
-th,td{
-    border:1px solid #ccc;
-    padding:15px;
-    text-align:center;
-}
-
-th{
-    font-size:24px;
-    background:#fafafa;
-}
-
-.red{
-    color:red;
-    font-weight:bold;
-}
-
-.footer{
-    background:#0d5bd7;
-    color:white;
-    text-align:center;
-    padding:20px;
-    font-size:20px;
-    line-height:1.8;
-}
-
-.yellow{
-    color:yellow;
-    font-weight:bold;
-}
+body{margin:0;background:#111;font-family:Arial;color:white}
+.header{background:#0038d8;text-align:center;padding:18px;font-size:28px;font-weight:bold}
+.date{text-align:center;background:#0055cc;padding:10px;font-size:22px}
+table{width:100%;border-collapse:collapse;background:white;color:black}
+th{background:#ddd;font-size:18px;padding:10px;border:1px solid #aaa}
+td{padding:12px;border:1px solid #aaa;text-align:center;font-size:16px}
+.red{color:red;font-weight:bold}
+.team{font-weight:bold}
+.footer{background:#0038d8;color:white;text-align:center;padding:18px;font-size:18px;line-height:1.7}
+.yellow{color:yellow;font-weight:bold}
 </style>
 </head>
-
 <body>
 
-<div class="header">
-23/6/2026 (အင်္ဂါနေ့)
-</div>
+<div class="header">STG7 BET TRACKER</div>
+<div class="date" id="dateBox">Loading...</div>
 
 <table>
+<thead>
 <tr>
 <th>KR</th>
 <th>BODY</th>
 <th>ပွဲ</th>
-<th>RESULTS</th>
+<th>Results</th>
 <th>ပြိုင်ဘက်</th>
 <th>GOAL+</th>
 </tr>
-
-<tr>
-<td><b>2:00</b></td>
-<td class="red">2-50</td>
-<td>ပေါ်တိုဂီ</td>
-<td></td>
-<td>ဥရောပကစားသမား</td>
-<td class="red">3-30</td>
-</tr>
-
-<tr>
-<td><b>5:00</b></td>
-<td class="red">2D</td>
-<td>အင်္ဂလန်</td>
-<td></td>
-<td>ဂါနာ</td>
-<td class="red">3D</td>
-</tr>
-
-<tr>
-<td><b>8:00</b></td>
-<td class="red">1-30</td>
-<td>ချီလီအေးရှား</td>
-<td></td>
-<td>ပနားမား (H)</td>
-<td class="red">3+40</td>
-</tr>
-
-<tr>
-<td><b>11:00</b></td>
-<td class="red">1+10</td>
-<td>ကိုလံဘီယာ</td>
-<td></td>
-<td>DR ကွန်ဂို</td>
-<td class="red">2-50</td>
-</tr>
-
+</thead>
+<tbody id="matchTable"></tbody>
 </table>
 
 <div class="footer">
 ကြေးအပြောင်းလဲ ရှိနိုင်ပါသည်။<br>
-
-<span class="yellow">
-Monday to Friday (2:00) CLOSE 🚫
-</span><br>
-
-<span class="yellow">
-Saturday, Sunday (3:00) CLOSE 🚫
-</span>
+<span class="yellow">Monday to Friday (2:00) CLOSE 🚫</span><br>
+<span class="yellow">Saturday, Sunday (3:00) CLOSE 🚫</span>
 </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, onSnapshot, query, orderBy }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB0rUsY7AVAYYhhUzze0_UUuUJBSMVc4dQ",
+  authDomain: "stg7-bet-tracker.firebaseapp.com",
+  projectId: "stg7-bet-tracker",
+  storageBucket: "stg7-bet-tracker.firebasestorage.app",
+  messagingSenderId: "696998959643",
+  appId: "1:696998959643:web:2ba9bccb6beabfb681b6be",
+  measurementId: "G-C8ZYMLW4FD"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const q = query(collection(db,"matches"), orderBy("createdAt","asc"));
+
+onSnapshot(q,(snap)=>{
+  let html="";
+  let currentDate="";
+
+  snap.forEach(doc=>{
+    const m = doc.data();
+    if(m.date){ currentDate = m.date; }
+
+    html += `
+    <tr>
+      <td><b>${m.kr || ""}</b></td>
+      <td class="red">${m.body || ""}</td>
+      <td class="team">${m.home || ""}</td>
+      <td>${m.result || ""}</td>
+      <td class="team">${m.away || ""}</td>
+      <td class="red">${m.goal || ""}</td>
+    </tr>`;
+  });
+
+  document.getElementById("matchTable").innerHTML = html;
+  document.getElementById("dateBox").innerText = currentDate || "STG7 Match Board";
+});
+</script>
 
 </body>
 </html>
