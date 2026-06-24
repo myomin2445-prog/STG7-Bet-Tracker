@@ -18,10 +18,10 @@ button{background:#008000;color:white;font-weight:bold}
 <h1>STG7 Admin Panel</h1>
 
 <input id="date" placeholder="နေ့စွဲ 23/6/2026 (အင်္ဂါနေ့)">
-<input id="kr" placeholder="KR အချိန် 2:00">
-<input id="body" placeholder="BODY 2-50">
-<input id="home" placeholder="အသင်း ၁">
-<input id="away" placeholder="အသင်း ၂">
+<input id="time" placeholder="KR အချိန် 2:00">
+<input id="match" placeholder="BODY 2-50">
+<input id="over" placeholder="အသင်း ၁">
+<input id="under" placeholder="အသင်း ၂">
 <input id="result" placeholder="Result">
 <input id="goal" placeholder="GOAL+ 3-30">
 
@@ -51,19 +51,19 @@ const db = getFirestore(app);
 window.addMatch = async function(){
   await addDoc(collection(db,"matches"),{
     date: date.value,
-    kr: kr.value,
-    body: body.value,
-    home: home.value,
-    away: away.value,
+    time: time.value,
+    match: match.value,
+    over: over.value,
+    under: under.value,
     result: result.value,
     goal: goal.value,
     createdAt: Date.now()
   });
 
-  kr.value="";
-  body.value="";
-  home.value="";
-  away.value="";
+  time.value="";
+  match.value="";
+  over.value="";
+  under.value="";
   result.value="";
   goal.value="";
 };
