@@ -74,8 +74,8 @@ onSnapshot(collection(db,"matches"),(snap)=>{
     const m=d.data();
     html += `
     <div class="card">
-      <b>${m.kr}</b> | BODY: ${m.body}<br>
-      ${m.home} vs ${m.away}<br>
+      <b>${m.time}</b> | BODY: ${m.match}<br>
+      ${m.over} vs ${m.under}<br>
       Result: ${m.result || "-"}<br>
       GOAL+: ${m.goal}<br>
       <button class="del" onclick="deleteMatch('${d.id}')">ဖျက်ရန်</button>
