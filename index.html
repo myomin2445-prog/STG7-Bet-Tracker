@@ -74,11 +74,11 @@ onSnapshot(q,(snap)=>{
     html += `
     <tr>
       <td><b>${m.kr || ""}</b></td>
-      <td class="red">${m.body || ""}</td>
-      <td class="team">${m.home || ""}</td>
+      <td class="red">${m.time || ""}</td>
+      <td class="team">${m.match|| ""}</td>
       <td>${m.result || ""}</td>
-      <td class="team">${m.away || ""}</td>
-      <td class="red">${m.goal || ""}</td>
+      <td class="team">${m.over || ""}</td>
+      <td class="red">${m.under || ""}</td>
     </tr>`;
   });
 
