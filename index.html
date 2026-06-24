@@ -1,112 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="my">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STG7 Bet Tracker</title>
+<title>STG7 Match Board</title>
+
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#111;
-color:white;
-padding:20px;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
 }
-.container{
-max-width:500px;
-margin:auto;
+
+.header{
+    background:#0d5bd7;
+    color:white;
+    text-align:center;
+    padding:15px;
+    font-size:30px;
+    font-weight:bold;
 }
-input,select,button{
-width:100%;
-padding:10px;
-margin:5px 0;
-border-radius:8px;
-border:none;
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
 }
-button{
-background:#00c853;
-color:white;
-font-weight:bold;
+
+th,td{
+    border:1px solid #ccc;
+    padding:15px;
+    text-align:center;
 }
-.card{
-background:#222;
-padding:10px;
-margin-top:10px;
-border-radius:10px;
+
+th{
+    font-size:24px;
+    background:#fafafa;
 }
-.win{color:#00e676;}
-.lose{color:#ff5252;}
+
+.red{
+    color:red;
+    font-weight:bold;
+}
+
+.footer{
+    background:#0d5bd7;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:20px;
+    line-height:1.8;
+}
+
+.yellow{
+    color:yellow;
+    font-weight:bold;
+}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-<h1>⚽ STG7 Bet Tracker</h1>
-
-<input id="home" placeholder="Home Team">
-<input id="away" placeholder="Away Team">
-
-<select id="betType">
-<option>1X2</option>
-<option>Over/Under</option>
-</select>
-
-<input id="selection" placeholder="Selection">
-<input id="odds" type="number" step="0.01" placeholder="Odds">
-<input id="stake" type="number" placeholder="Stake">
-
-<select id="result">
-<option value="win">Win</option>
-<option value="lose">Lose</option>
-</select>
-
-<button onclick="saveBet()">Save Bet</button>
-
-<h2>History</h2>
-<div id="history"></div>
-
+<div class="header">
+23/6/2026 (အင်္ဂါနေ့)
 </div>
 
-<script>
-let bets = JSON.parse(localStorage.getItem("bets")) || [];
+<table>
+<tr>
+<th>KR</th>
+<th>BODY</th>
+<th>ပွဲ</th>
+<th>RESULTS</th>
+<th>ပြိုင်ဘက်</th>
+<th>GOAL+</th>
+</tr>
 
-function saveBet(){
-let home=document.getElementById("home").value;
-let away=document.getElementById("away").value;
-let odds=parseFloat(document.getElementById("odds").value);
-let stake=parseFloat(document.getElementById("stake").value);
-let result=document.getElementById("result").value;
+<tr>
+<td><b>2:00</b></td>
+<td class="red">2-50</td>
+<td>ပေါ်တိုဂီ</td>
+<td></td>
+<td>ဥရောပကစားသမား</td>
+<td class="red">3-30</td>
+</tr>
 
-let profit=result==="win"
-? (stake*odds)-stake
-: -stake;
+<tr>
+<td><b>5:00</b></td>
+<td class="red">2D</td>
+<td>အင်္ဂလန်</td>
+<td></td>
+<td>ဂါနာ</td>
+<td class="red">3D</td>
+</tr>
 
-bets.push({
-home,away,odds,stake,result,profit
-});
+<tr>
+<td><b>8:00</b></td>
+<td class="red">1-30</td>
+<td>ချီလီအေးရှား</td>
+<td></td>
+<td>ပနားမား (H)</td>
+<td class="red">3+40</td>
+</tr>
 
-localStorage.setItem("bets",JSON.stringify(bets));
-render();
-}
+<tr>
+<td><b>11:00</b></td>
+<td class="red">1+10</td>
+<td>ကိုလံဘီယာ</td>
+<td></td>
+<td>DR ကွန်ဂို</td>
+<td class="red">2-50</td>
+</tr>
 
-function render(){
-let html="";
-bets.reverse().forEach(b=>{
-html+=`
-<div class="card">
-<b>${b.home} vs ${b.away}</b><br>
-Odds: ${b.odds}<br>
-Stake: ${b.stake}<br>
-<span class="${b.result}">
-${b.result.toUpperCase()}
+</table>
+
+<div class="footer">
+ကြေးအပြောင်းလဲ ရှိနိုင်ပါသည်။<br>
+
+<span class="yellow">
+Monday to Friday (2:00) CLOSE 🚫
 </span><br>
-Profit: ${b.profit}
+
+<span class="yellow">
+Saturday, Sunday (3:00) CLOSE 🚫
+</span>
 </div>
-`;
-});
-document.getElementById("history").innerHTML=html;
-}
-render();
-</script>
 
 </body>
 </html>
