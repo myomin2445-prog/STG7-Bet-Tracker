@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STG7 BET TRACKER</title>
+
+<style>
+body{margin:0;background:#000;font-family:Arial,sans-serif;color:#fff}
+.header{background:#003cff;padding:20px;text-align:center;font-size:36px;font-weight:bold}
+.date{background:#0055cc;padding:10px;text-align:center;font-size:22px;font-weight:bold}
+table{width:100%;border-collapse:collapse;background:#fff;color:#000}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th{background:#ddd}
+.red{color:red;font-weight:bold}
+.team{font-weight:bold}
+.footer{background:#003cff;padding:15px;text-align:center;font-size:18px;line-height:1.8}
+.yellow{color:yellow;font-weight:bold}
+</style>
+</head>
+
+<body>
+
+<div class="header">STG7 BET TRACKER</div>
+<div class="date" id="dateBox">Connecting...</div>
+
+<table>
+<thead>
+<tr>
+<th>KR</th>
+<th>BODY</th>
+<th>HOME</th>
+<th>RESULT</th>
+<th>AWAY</th>
+<th>GOAL+</th>
+</tr>
+</thead>
+<tbody id="matchTable">
+<tr><td colspan="6">Loading...</td></tr>
+</tbody>
+</table>
+
+<div class="footer">
+ကြေးအပြောင်းအလဲ ရှိနိုင်ပါသည်<br>
+<span class="yellow">Monday-Friday (2:00) CLOSE 🚫</span><br>
+<span class="yellow">Saturday-Sunday (3:00) CLOSE 🚫</span>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB0rUsY7AVAYYhhUzze0_UUuUJBSMVc4dQ",
+  authDomain: "stg7-bet-tracker.firebaseapp.com",
+  projectId: "stg7-bet-tracker",
+  storageBucket: "stg7-bet-tracker.firebasestorage.app",
+  messagingSenderId: "696998959643",
+  appId: "1:696998959643:web:2ba9bccb6beabfb681b6be"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const dateBox = document.getElementById("dateBox");
+const matchTable = document.getElementById("matchTable");
+
+db.collection("matches").onSnapshot(function(snapshot){
+  let html = "";
+  let lastDate = "";
+
+  if(snapshot.empty){
+    dateBox.innerText = "STG7 Match Board";
+    matchTable.innerHTML = '<tr><td colspan="6">ပွဲမရှိသေးပါ</td></tr>';
+    return;
+  }
+
+  snapshot.forEach(function(doc){
+    const m = doc.data();
+
+    if(m.date){
+      lastDate = m.date;
+    }
+
+    html += `
+      <tr>
+        <td><b>${m.kr || ""}</b></td>
+        <td class="red">${m.body || ""}</td>
+        <td class="team">${m.home || ""}</td>
+        <td>${m.result || ""}</td>
+        <td class="team">${m.away || ""}</td>
+        <td class="red">${m.goal || ""}</td>
+      </tr>
+    `;
+  });
+
+  dateBox.innerText = lastDate || "STG7 Match Board";
+  matchTable.innerHTML = html;
+
+}, function(error){
+  dateBox.innerText = "Firebase Error";
+  matchTable.innerHTML =
+    '<tr><td colspan="6">' + error.message + '</td></tr>';
+});
+</script>
+
+</body>
+</html>
